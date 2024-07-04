@@ -1,5 +1,6 @@
 import customtkinter as ctk
-from calculators import temperature_calculator, speed_calculator
+from calculators import (temperature_calculator,
+                         speed_calculator, length_calculator)
 
 
 # Configurar janela principal
@@ -63,7 +64,7 @@ class ConversorApp:
         self.entry_input.pack_configure(anchor='center')
 
         self.button_enter = ctk.CTkButton(
-            self.root, text='Calcular', font=('Roboto', 14),
+            self.root, text='Converter', font=('Roboto', 14),
             command=self.calculate_result)
         self.button_enter.pack_configure(anchor='center', pady=(15, 0))
 
@@ -100,7 +101,8 @@ class ConversorApp:
         self.var_unit_final.set(units[1])
 
     def lenght_widgets(self):
-        units = ['Metros', 'Pés', 'Polegadas']
+        units = ['Centímetros', 'Metros', 'Quilômetros', 'Pés',
+                 'Polegadas', 'Milhas', 'Jardas']
 
         self.var_unit_initial = ctk.StringVar()
         self.unit_inital = ctk.CTkOptionMenu(
@@ -119,7 +121,7 @@ class ConversorApp:
         self.var_unit_final.set(units[1])
 
     def speed_widgets(self):
-        units = ['Metros por segundo', 'Kilômetros por hora',
+        units = ['Metros por segundo', 'Quilômetros por hora',
                  'Milhas por segundo', 'Milhas por hora']
 
         self.var_unit_initial = ctk.StringVar()
@@ -146,8 +148,11 @@ class ConversorApp:
         if self.var_measure.get() == 'Temperatura':
             result = temperature_calculator(initial_unit, final_unit, value)
             self.output_label.configure(text=result)
-        if self.var_measure.get() == 'Velocidade':
+        elif self.var_measure.get() == 'Velocidade':
             result = speed_calculator(initial_unit, final_unit, value)
+            self.output_label.configure(text=result)
+        elif self.var_measure.get() == "Comprimento":
+            result = length_calculator(initial_unit, final_unit, value)
             self.output_label.configure(text=result)
 
 
