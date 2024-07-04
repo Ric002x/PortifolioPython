@@ -1,12 +1,12 @@
 import customtkinter as ctk
-from calculators import temperature_calculator
+from calculators import temperature_calculator, speed_calculator
 
 
 # Configurar janela principal
 class ConversorApp:
     def __init__(self, root):
         self.root = root
-        self.root.geometry('500x500')
+        self.root.geometry('450x450')
 
         # Input Measure Frame And Label
         self.input_label = ctk.CTkLabel(
@@ -75,8 +75,10 @@ class ConversorApp:
 
         if self.var_measure.get() == 'Temperatura':
             self.temperature_widgets()
-        if self.var_measure.get() == 'Comprimento':
+        elif self.var_measure.get() == 'Comprimento':
             self.lenght_widgets()
+        elif self.var_measure.get() == 'Velocidade':
+            self.speed_widgets()
 
     def temperature_widgets(self):
         units = ['Celsius', 'Fahrenheit', 'Kelvin']
@@ -116,16 +118,41 @@ class ConversorApp:
         self.unit_final.pack_configure(anchor='center', pady=(15, 0))
         self.var_unit_final.set(units[1])
 
+    def speed_widgets(self):
+        units = ['Metros por segundo', 'Kilômetros por hora',
+                 'Milhas por segundo', 'Milhas por hora']
+
+        self.var_unit_initial = ctk.StringVar()
+        self.unit_inital = ctk.CTkOptionMenu(
+            self.input_units_frame, values=units,
+            variable=self.var_unit_initial
+        )
+        self.unit_inital.pack_configure(anchor='center', pady=(15, 0))
+        self.var_unit_initial.set(units[0])
+
+        self.var_unit_final = ctk.StringVar()
+        self.unit_final = ctk.CTkOptionMenu(
+            self.input_units_frame, values=units,
+            variable=self.var_unit_final
+        )
+        self.unit_final.pack_configure(anchor='center', pady=(15, 0))
+        self.var_unit_final.set(units[1])
+
     def calculate_result(self, *args):
         initial_unit = self.var_unit_initial.get()
         final_unit = self.var_unit_final.get()
         value = self.var_entry.get()
 
-        result = temperature_calculator(initial_unit, final_unit, value)
-        self.output_label.configure(text=result)
+        if self.var_measure.get() == 'Temperatura':
+            result = temperature_calculator(initial_unit, final_unit, value)
+            self.output_label.configure(text=result)
+        if self.var_measure.get() == 'Velocidade':
+            result = speed_calculator(initial_unit, final_unit, value)
+            self.output_label.configure(text=result)
 
 
 if __name__ == '__main__':
     root = ctk.CTk()
+    root.resizable(False, False)
     app = ConversorApp(root)
     root.mainloop()

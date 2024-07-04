@@ -20,4 +20,11 @@ def temperature_calculator(initial_unit, final_unit, initial_unit_value):
     else:
         result = temperature_value  # Se as unidades forem iguais, não há conversão  # noqa: E501
 
-    return f'{temperature_value} {initial_unit} = {result} {final_unit}'
+    temperature_dict = {
+        "Kelvin": 'Kelvin',
+        "Celsius": 'ºC',
+        "Fahrenheit": 'ºF'
+    }
+
+    return (f'{temperature_value} {temperature_dict[initial_unit]} ='
+            f' {result} {temperature_dict[final_unit]}')
